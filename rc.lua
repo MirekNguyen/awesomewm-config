@@ -338,7 +338,14 @@ globalkeys = gears.table.join(
     awful.key({ modkey, "Shift" }, "space", function()
       os.execute("rofi -show window")
               end,
-    {description = "launch rofi window", group = "launcher"})
+    {description = "launch rofi window", group = "launcher"}),
+    awful.key({ modkey, "Shift" }, "z", function ()
+        os.execute("setxkbmap cz")
+  end, {description="toggle Czech keyboard layout", group="keyboard"}),
+    awful.key({ modkey, "Shift" }, "x", function ()
+        os.execute("setxkbmap us")
+  end, {description="toggle US keyboard layout", group="keyboard"})
+
 )
 
 clientkeys = gears.table.join(
@@ -432,15 +439,7 @@ for i = 1, 9 do
                       end
                   end,
                   {description = "toggle focused client on tag #" .. i, group = "tag"})
-    ),
-  awful.key({ modkey, "Shift" }, "`", function ()
-    local current_layout = io.popen("setxkbmap -query | grep layout | awk '{print $2}'"):read("*line")
-    if current_layout == "us" then
-        os.execute("setxkbmap cz")
-    else
-        os.execute("setxkbmap us")
-    end
-  end, {description="toggle between Czech and US keyboard layouts", group="keyboard"})
+    )
 end
 
 clientbuttons = gears.table.join(
