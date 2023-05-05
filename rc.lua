@@ -27,6 +27,10 @@ if awesome.startup_errors then
                      text = awesome.startup_errors })
 end
 
+-- startup
+os.execute("xset r rate 220 25")
+os.execute("setxkbmap -option caps:escape")
+
 -- Handle runtime errors after startup
 do
     local in_error = false
@@ -326,7 +330,15 @@ globalkeys = gears.table.join(
               {description = "lua execute prompt", group = "awesome"}),
     -- Menubar
     awful.key({ modkey }, "p", function() menubar.show() end,
-              {description = "show the menubar", group = "launcher"})
+              {description = "show the menubar", group = "launcher"}),
+    awful.key({ modkey }, "space", function()
+      os.execute("rofi -show drun")
+              end,
+    {description = "launch rofi drun", group = "launcher"}),
+    awful.key({ modkey, "Shift" }, "space", function()
+      os.execute("rofi -show window")
+              end,
+    {description = "launch rofi window", group = "launcher"})
 )
 
 clientkeys = gears.table.join(
@@ -420,7 +432,15 @@ for i = 1, 9 do
                       end
                   end,
                   {description = "toggle focused client on tag #" .. i, group = "tag"})
-    )
+    ),
+  awful.key({ modkey, "Shift" }, "`", function ()
+    local current_layout = io.popen("setxkbmap -query | grep layout | awk '{print $2}'"):read("*line")
+    if current_layout == "us" then
+        os.execute("setxkbmap cz")
+    else
+        os.execute("setxkbmap us")
+    end
+  end, {description="toggle between Czech and US keyboard layouts", group="keyboard"})
 end
 
 clientbuttons = gears.table.join(
